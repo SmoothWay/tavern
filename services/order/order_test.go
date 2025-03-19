@@ -1,4 +1,4 @@
-package services
+package order
 
 import (
 	"testing"
@@ -10,17 +10,17 @@ import (
 )
 
 func init_products(t *testing.T) []product.Product {
-	beer, err := product.NewProduct("German beer", "Made in Germany", 1.99)
+	beer, err := product.New("German beer", "Made in Germany", 1.99)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	meat, err := product.NewProduct("Steak", "500g beef", 10.99)
+	meat, err := product.New("Steak", "500g beef", 10.99)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	wine, err := product.NewProduct("Red wine", `healthy wine 10%% of alcohol`, 10)
+	wine, err := product.New("Red wine", `healthy wine 10%% of alcohol`, 10)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,7 +33,7 @@ func init_products(t *testing.T) []product.Product {
 func TestOrderNewOrderService(t *testing.T) {
 	products := init_products(t)
 
-	os, err := NewOrderService(
+	os, err := New(
 		WithMemoryCustomerRepository(),
 		WithMemoryProductRepository(products),
 	)
@@ -41,7 +41,7 @@ func TestOrderNewOrderService(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	cust, err := customer.NewCustomer("Bob")
+	cust, err := customer.New("Bob")
 	if err != nil {
 		t.Error(err)
 	}

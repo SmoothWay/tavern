@@ -1,16 +1,18 @@
-package services
+package tavern
 
 import (
 	"log"
 
 	"github.com/google/uuid"
+
+	"github.com/SmoothWay/tavern/services/order"
 )
 
 type TavernConfiguration func(os *Tavern) error
 
 type Tavern struct {
 	// orderservice to take orders
-	OrderService *OrderService
+	OrderService *order.OrderService
 
 	// binlling service
 	BillingService any
@@ -27,7 +29,7 @@ func NewTavern(cfgs ...TavernConfiguration) (*Tavern, error) {
 
 	return t, nil
 }
-func WithOrderService(os *OrderService) TavernConfiguration {
+func WithOrderService(os *order.OrderService) TavernConfiguration {
 	return func(t *Tavern) error {
 		t.OrderService = os
 		return nil

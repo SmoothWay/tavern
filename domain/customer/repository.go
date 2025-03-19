@@ -13,7 +13,7 @@ var (
 	ErrCustomerAlreadyExists  = errors.New("customer already exists")
 )
 
-type CustomerRepository interface {
+type Repository interface {
 	Get(id uuid.UUID) (Customer, error)
 	Add(Customer) error
 	Update(Customer) error

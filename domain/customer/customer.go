@@ -25,7 +25,7 @@ type Customer struct {
 
 // NewCustomer is a factory to create a new customer aggregate
 // it will validate that the name is not empty
-func NewCustomer(name string) (Customer, error) {
+func New(name string) (Customer, error) {
 	if name == "" {
 		return Customer{}, ErrinvalidPerson
 	}

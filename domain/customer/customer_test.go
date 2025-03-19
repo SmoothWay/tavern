@@ -29,7 +29,7 @@ func TestCustomer_NewCustomer(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.test, func(t *testing.T) {
-			_, err := customer.NewCustomer(tc.name)
+			_, err := customer.New(tc.name)
 			if !errors.Is(err, tc.expectedErr) {
 				t.Errorf("expected error %v, but got: %v", tc.expectedErr, err)
 			}

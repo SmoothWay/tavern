@@ -1,4 +1,4 @@
-package services
+package order
 
 import (
 	"context"
@@ -17,11 +17,11 @@ import (
 type OrderConfiguration func(os *OrderService) error
 
 type OrderService struct {
-	customers customer.CustomerRepository
-	products  product.ProductRepository
+	customers customer.Repository
+	products  product.Repository
 }
 
-func NewOrderService(cfgs ...OrderConfiguration) (*OrderService, error) {
+func New(cfgs ...OrderConfiguration) (*OrderService, error) {
 	os := &OrderService{}
 
 	for _, cfg := range cfgs {
@@ -48,7 +48,7 @@ func WithMemoryProductRepository(products []product.Product) OrderConfiguration 
 }
 
 // WithCustomerRepository applies a customer repository to the OrderService
-func WithCustomerRepository(cr customer.CustomerRepository) OrderConfiguration {
+func WithCustomerRepository(cr customer.Repository) OrderConfiguration {
 	// return a function that matches the OrderConfiguration alias
 	return func(os *OrderService) error {
 		os.customers = cr
@@ -93,4 +93,18 @@ func (o *OrderService) CreateOrder(customerId uuid.UUID, productsIDs []uuid.UUID
 
 	log.Printf("Customer: %s has ordered %d products with total price: %f", c.GetID(), len(products), total)
 	return total, nil
+}
+
+func (o *OrderService) AddCustomer(name string) (uuid.UUID, error) {
+	cust, err := customer.New(name)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	err = o.customers.Add(cust)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	return cust.GetID(), nil
 }
